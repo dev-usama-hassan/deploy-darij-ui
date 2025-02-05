@@ -66,7 +66,7 @@ const ProfessionalVersionManagement = () => {
                 </button>
                 <button
                 className="block text-[#FF3B30] w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                // onClick={() => alert(`Delete clicked for ${code.promoId}`)}
+                onClick={() => alert("Functionality Comming soon")}
                 >
                     Delete
                 </button>
@@ -89,7 +89,7 @@ const ProfessionalVersionManagement = () => {
                 <img src={pv.channelvideo} alt="channel-video" className="w-[126px] h-[77px] rounded-[24px]" />
                 <div>
                   {/* <p className="font-inter text-[16px] font-[600]">{pv.videotitle}</p> */}
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 mt-5">
                     <img src={ ChannelIcon} alt="channel-icon" className="w-[40px] h-[40px] rounded-full" />
                     <div className="flex flex-col">
                       <p className="font-inter text-[#3C3C3B] text-[14px]">channel Name</p>
