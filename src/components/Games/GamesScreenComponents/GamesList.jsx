@@ -1,11 +1,44 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Shipments from "../../../assets/Shipments.svg";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const GamesList = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
+    // const [activeIndex, setActiveIndex] = useState(0);
     const navigate = useNavigate();
+    const location = useLocation();
+    const { languageName } = location.state || {};
+    // const { games } = location.state;
+    
+        useEffect(() => {
+            const handleBackButton = (event) => {
+                event.preventDefault();
+                navigate('/games'); // Redirect to "/users" when back is pressed
+            };
+    
+            window.history.pushState(null, null, window.location.pathname);
+            window.addEventListener('popstate', handleBackButton);
+    
+            return () => {
+                window.removeEventListener('popstate', handleBackButton);
+            };
+        }, [navigate]);
+
+        const [activeIndex, setActiveIndex] = useState(() => {
+          const storedIndex = localStorage.getItem("activeIndex");
+          const storedName = localStorage.getItem("name");
+          const title = localStorage.getItem("title");
+          
+          return title === "Games" && storedIndex !== null ? parseInt(storedIndex, 10) : null;
+      });
+
+      useEffect(() => {
+        const title = localStorage.getItem("name");
+        if (title !== "Games") {
+            setActiveIndex(null);
+            localStorage.removeItem("activeIndex");
+        }
+    }, []);
 
     const miniGames = [
         { 
@@ -35,23 +68,18 @@ const GamesList = () => {
           },
       ];
 
-      const handleCardClick = (index) => {
+      const handleCardClick = (index, path) => {
         setActiveIndex(index);
-      };
-    
-      const handleNextClick = () => {
-        if (activeIndex !== null) {
-          navigate('/mini-games');
-        } else {
-          alert('Please select a language before proceeding.');
-        }
-      };
-
+        localStorage.setItem("activeIndex", index);
+        localStorage.setItem("name", path);
+    };
+  
   return (
     <>
       <section className="flex flex-col gap-3 overflow-hidden mb-64">
+         {/* <p>Selected Language: {languageName}</p> */}
         {miniGames.map((game, index) => (
-          <Link to={game.path} state={{ name: game.name }}>
+          <Link to={game.path} state={{ name: game.name }} onClick={() => handleCardClick(index, game.name)}>
           <div
             key={index}
             onClick={() => handleCardClick(index)}
@@ -67,7 +95,7 @@ const GamesList = () => {
                 </div>
             </div>
             <div className='w-[40px] h-[40px] rounded-full bg-[#f9f3f2] my-auto flex justify-center items-center cursor-pointer'>
-              <Link to={game.path} state={{ name: game.name }}>
+              <Link to={game.path} state={{ name: game.name }} onClick={() => handleCardClick(index, game.name)}>
               <MdKeyboardArrowRight className='text-[16px]'/>
               </Link>
              </div>
