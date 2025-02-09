@@ -59,6 +59,7 @@ const SideBar = ({ activeSection, setActiveSection }) => {
       localStorage.removeItem("versionIndex");
       localStorage.removeItem("languageIndex");
     }
+    console.log("Route:", route);
 };
 console.log("Location:", location.pathname)
 
@@ -116,7 +117,7 @@ console.log("Location:", location.pathname)
                     <li
                       key={e.id}
                       className={`flex flex-col rounded-full cursor-pointer mx-2 ${
-                        location.pathname === e.route ? "bg-[#1a1a1a] h-10" : "bg-transparent"
+                        localStorage.getItem("title") === e.title ? "bg-[#1a1a1a] h-10" : "bg-transparent"
                       }`}
                       onClick={()=> handleTabClick(e.title, e.id, e.route)}
                     >
